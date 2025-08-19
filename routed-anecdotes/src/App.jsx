@@ -83,6 +83,10 @@ const CreateNew = (props) => {
     votes: 0
   }
 
+  const { reset: resetContent, ...contentProps } = content
+  const { reset: resetAuthor, ...authorProps} = author
+  const { reset: resetInfo, ...infoProps } = info
+
   const handleSubmit = (e) => {
     e.preventDefault()
     props.addNew(newAnecdote)
@@ -93,11 +97,11 @@ const CreateNew = (props) => {
     }, 5000)
   }
 
-  const reset = (event) => {
+  const handleReset = (event) => {
     event.preventDefault()
-    content.reset()
-    author.reset()
-    info.reset()
+    resetContent()
+    resetAuthor()
+    resetInfo()
   }
 
   return (
@@ -106,18 +110,18 @@ const CreateNew = (props) => {
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input {...content} />
+          <input {...contentProps} />
         </div>
         <div>
           author
-          <input {...author} />
+          <input {...authorProps} />
         </div>
         <div>
           url for more info
-          <input {...info} />
+          <input {...infoProps} />
         </div>
         <button>create</button>
-        <button onClick={reset}>reset</button>
+        <button onClick={handleReset}>reset</button>
       </form>
     </div>
   )
