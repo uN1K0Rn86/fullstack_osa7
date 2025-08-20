@@ -1,3 +1,5 @@
+import PropTypes from "prop-types"
+
 const User = ({ user, handleLogout }) => {
   return (
     <div>
@@ -7,6 +9,11 @@ const User = ({ user, handleLogout }) => {
       </form>
     </div>
   )
+}
+
+User.propTypes = {
+  user: PropTypes.object.isRequired,
+  handleLogout: PropTypes.func.isRequired,
 }
 
 export default User
