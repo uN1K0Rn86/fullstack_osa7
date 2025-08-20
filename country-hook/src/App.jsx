@@ -24,7 +24,6 @@ const useCountry = (name) => {
     }
 
     const url = `https://studies.cs.helsinki.fi/restcountries/api/name/${name}`
-    console.log(url)
 
     axios
       .get(url)
