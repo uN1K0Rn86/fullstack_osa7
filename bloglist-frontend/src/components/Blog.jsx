@@ -2,6 +2,7 @@ import PropTypes from "prop-types"
 import { useState } from "react"
 import { useDispatch } from "react-redux"
 import { likeBlog, deleteBlog } from "../reducers/blogReducer"
+import { Link } from "react-router-dom"
 
 const Blog = ({ blog, username }) => {
   const dispatch = useDispatch()
@@ -14,7 +15,7 @@ const Blog = ({ blog, username }) => {
     setShowInfo(!showInfo)
   }
 
-  const addLike = () => {
+  const handleLike = () => {
     const likedBlog = { ...blog }
     likedBlog.likes = blog.likes + 1
     dispatch(likeBlog(likedBlog))
@@ -33,7 +34,9 @@ const Blog = ({ blog, username }) => {
   return (
     <>
       <tr style={infoHidden}>
-        <td>{blog.title}</td>
+        <td>
+          <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+        </td>
         <td>{blog.author}</td>
         <td>
           <button type='submit' onClick={toggleInfo}>
@@ -44,12 +47,12 @@ const Blog = ({ blog, username }) => {
       </tr>
       <tr style={infoShown}>
         <td>
-          {blog.title}
+          <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
           <br />
           {blog.url}
           <br />
           <span>Likes: {blog.likes} </span>
-          <button type='submit' onClick={addLike}>
+          <button type='submit' onClick={handleLike}>
             Like
           </button>
           <br />

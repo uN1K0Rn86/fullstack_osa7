@@ -9,7 +9,9 @@ import AddBlogForm from "./components/AddBlogForm"
 import User from "./components/User"
 import Notification from "./components/Notification"
 import blogService from "./services/blogs"
+import UsersView from "./components/UsersView"
 import UserView from "./components/UserView"
+import BlogView from "./components/BlogView"
 
 import { initializeBlogs } from "./reducers/blogReducer"
 import { setUser } from "./reducers/userReducer"
@@ -24,7 +26,9 @@ const App = () => {
   useEffect(() => {
     dispatch(initializeBlogs())
     dispatch(initializeUsers())
-  })
+  }, [dispatch])
+
+  const users = useSelector(state => state.users)
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedBlogappUser")
@@ -62,7 +66,9 @@ const App = () => {
             }
           />
         )}
-        <Route path='/users' element={<UserView />} />
+        <Route path='/users' element={<UsersView />} />
+        <Route path='/users/:id' element={<UserView />} />
+        <Route path='/blogs/:id' element={<BlogView />} />
       </Routes>
     </div>
   )

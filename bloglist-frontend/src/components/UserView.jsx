@@ -1,35 +1,21 @@
 import { useSelector } from "react-redux"
+import { useParams } from "react-router-dom"
 
 const UserView = () => {
+  const id = useParams().id
   const users = useSelector(state => state.users)
-
-  const columnStyle = {
-    minWidth: "250px",
-  }
+  const user = users.find(user => user.id === id)
 
   return (
     <div>
-      <h2>Users</h2>
-      <div>
-        <table>
-          <thead>
-            <tr>
-              <th style={columnStyle}>Username</th>
-              <th>Name</th>
-              <th>Blogs Created</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map(user => (
-              <tr key={user.id}>
-                <td>{user.username}</td>
-                <td>{user.name}</td>
-                <td>{user.blogs.length}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <h2>{user.username}</h2>
+      <div>Name: {user.name}</div>
+      <h3>Added Blogs</h3>
+      <ul>
+        {user.blogs.map(blog => (
+          <li key={blog.id}>{blog.title}</li>
+        ))}
+      </ul>
     </div>
   )
 }
