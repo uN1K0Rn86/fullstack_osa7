@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import Togglable from "./components/Togglable"
 import BlogList from "./components/BlogList"
 import LoginForm from "./components/LoginForm"
@@ -10,13 +10,12 @@ import blogService from "./services/blogs"
 import loginService from "./services/login"
 import { setNotification } from "./reducers/notificationReducer"
 import { initializeBlogs } from "./reducers/blogReducer"
+import { setUser } from "./reducers/userReducer"
 import "./index.css"
 
 const App = () => {
-  const [username, setUsername] = useState("")
-  const [password, setPassword] = useState("")
-  const [user, setUser] = useState(null)
-
+  const user = useSelector(state => state.user)
+  const formRef = useRef()
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -26,62 +25,20 @@ const App = () => {
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedBlogappUser")
     if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      setUser(user)
-      blogService.setToken(user.token)
+      const loggedUser = JSON.parse(loggedUserJSON)
+      dispatch(setUser(loggedUser))
+      blogService.setToken(loggedUser.token)
     }
-  }, [])
-
-  const handleLogin = async event => {
-    event.preventDefault()
-
-    try {
-      const user = await loginService.login({
-        username,
-        password,
-      })
-
-      window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user))
-      blogService.setToken(user.token)
-      setUser(user)
-      setUsername("")
-      setPassword("")
-      dispatch(setNotification(`${user.username} successfully logged in`, "success"))
-    } catch (exception) {
-      dispatch(setNotification("Incorrect username or password", "error"))
-    }
-  }
-
-  const handleLogout = async event => {
-    event.preventDefault()
-
-    const loggedOutUserJSON = window.localStorage.getItem("loggedBlogappUser")
-    const loggedOutUser = JSON.parse(loggedOutUserJSON)
-
-    window.localStorage.removeItem("loggedBlogappUser")
-
-    setUser(null)
-    dispatch(setNotification(`${loggedOutUser.username} successfully logged out`, "success"))
-  }
-
-  const formRef = useRef()
+  }, [dispatch])
 
   return (
     <div>
       <Notification />
-      {!user && (
-        <LoginForm
-          handleLogin={handleLogin}
-          username={username}
-          setUsername={setUsername}
-          password={password}
-          setPassword={setPassword}
-        />
-      )}
+      {!user && <LoginForm />}
       {user && (
         <div>
           <h2>Blogs</h2>
-          <User user={user} handleLogout={handleLogout} />
+          <User />
           <br />
           <Togglable buttonLabel='Add New Blog' ref={formRef}>
             <AddBlogForm formRef={formRef} />
