@@ -1,8 +1,9 @@
 import { useState } from "react"
 import { createBlog } from "../reducers/blogReducer"
 import { useDispatch } from "react-redux"
+import PropTypes from "prop-types"
 
-const AddBlogForm = () => {
+const AddBlogForm = ({ formRef }) => {
   const [title, setTitle] = useState("")
   const [author, setAuthor] = useState("")
   const [url, setUrl] = useState("")
@@ -22,6 +23,7 @@ const AddBlogForm = () => {
     setTitle("")
     setAuthor("")
     setUrl("")
+    formRef.current.toggleVisibility()
   }
 
   return (
@@ -76,6 +78,10 @@ const AddBlogForm = () => {
       </form>
     </div>
   )
+}
+
+AddBlogForm.propTypes = {
+  formRef: PropTypes.object.isRequired,
 }
 
 export default AddBlogForm

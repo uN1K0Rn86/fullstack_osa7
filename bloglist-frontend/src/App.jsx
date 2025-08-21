@@ -65,29 +65,6 @@ const App = () => {
     dispatch(setNotification(`${loggedOutUser.username} successfully logged out`, "success"))
   }
 
-  const addBlog = async newBlog => {
-    try {
-      formRef.current.toggleVisibility()
-      const returnedBlog = await blogService.create(newBlog)
-      const blogs = await blogService.getAll()
-      setBlogs(blogs)
-
-      dispatch(
-        setNotification(
-          `Blog '${returnedBlog.data.title}' by ${returnedBlog.data.author} successfully added.`,
-          "success"
-        )
-      )
-    } catch (exception) {
-      let exceptionMessage = "Unable to add blog"
-      if (exception.response.data) {
-        exceptionMessage = exception.response.data.error || exceptionMessage
-      }
-
-      dispatch(setNotification(exceptionMessage, "error"))
-    }
-  }
-
   const addLike = async (id, likedBlog) => {
     try {
       const returnedBlog = await blogService.update(id, likedBlog)
@@ -143,7 +120,7 @@ const App = () => {
           <User user={user} handleLogout={handleLogout} />
           <br />
           <Togglable buttonLabel='Add New Blog' ref={formRef}>
-            <AddBlogForm />
+            <AddBlogForm formRef={formRef} />
           </Togglable>
           <br />
           <BlogList like={addLike} username={user.username} remove={deleteBlog} />
