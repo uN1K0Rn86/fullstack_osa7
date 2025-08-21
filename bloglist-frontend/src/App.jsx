@@ -1,5 +1,7 @@
-import { useState, useEffect, useRef } from "react"
+import { useEffect, useRef } from "react"
 import { useDispatch, useSelector } from "react-redux"
+import { Routes, Route } from "react-router-dom"
+
 import Togglable from "./components/Togglable"
 import BlogList from "./components/BlogList"
 import LoginForm from "./components/LoginForm"
@@ -7,10 +9,11 @@ import AddBlogForm from "./components/AddBlogForm"
 import User from "./components/User"
 import Notification from "./components/Notification"
 import blogService from "./services/blogs"
-import loginService from "./services/login"
-import { setNotification } from "./reducers/notificationReducer"
+import UserView from "./components/UserView"
+
 import { initializeBlogs } from "./reducers/blogReducer"
 import { setUser } from "./reducers/userReducer"
+import { initializeUsers } from "./reducers/usersReducer"
 import "./index.css"
 
 const App = () => {
@@ -20,6 +23,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(initializeBlogs())
+    dispatch(initializeUsers())
   })
 
   useEffect(() => {
@@ -40,13 +44,26 @@ const App = () => {
           <h2>Blogs</h2>
           <User />
           <br />
-          <Togglable buttonLabel='Add New Blog' ref={formRef}>
-            <AddBlogForm formRef={formRef} />
-          </Togglable>
-          <br />
-          <BlogList username={user.username} />
         </div>
       )}
+
+      <Routes>
+        {user && (
+          <Route
+            path='/'
+            element={
+              <div>
+                <Togglable buttonLabel='Add New Blog' ref={formRef}>
+                  <AddBlogForm formRef={formRef} />
+                </Togglable>
+                <br />
+                <BlogList username={user.username} />
+              </div>
+            }
+          />
+        )}
+        <Route path='/users' element={<UserView />} />
+      </Routes>
     </div>
   )
 }

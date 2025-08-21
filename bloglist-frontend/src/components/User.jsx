@@ -18,6 +18,10 @@ const User = () => {
     dispatch(setNotification(`${loggedOutUser.username} successfully logged out`, "success"))
   }
 
+  if (!user) {
+    return null
+  }
+
   return (
     <div>
       {user.name} logged in
