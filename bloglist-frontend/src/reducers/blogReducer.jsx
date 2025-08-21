@@ -12,10 +12,20 @@ const blogSlice = createSlice({
     appendBlog(state, action) {
       state.push(action.payload)
     },
+    updateBlog(state, action) {
+      const updatedBlog = action.payload
+      return state
+        .map(blog => (blog.id !== updatedBlog.id ? blog : updatedBlog))
+        .sort((a, b) => b.likes - a.likes)
+    },
+    removeBlog(state, action) {
+      const blogToRemove = action.payload
+      return state.filter(blog => blog.id !== blogToRemove.id)
+    },
   },
 })
 
-export const { setBlogs, appendBlog } = blogSlice.actions
+export const { setBlogs, appendBlog, updateBlog, removeBlog } = blogSlice.actions
 
 export const initializeBlogs = () => {
   return async dispatch => {
@@ -42,6 +52,40 @@ export const createBlog = newBlog => {
       }
 
       dispatch(setNotification(exceptionMessage, "error"))
+    }
+  }
+}
+
+export const likeBlog = likedBlog => {
+  return async dispatch => {
+    try {
+      const returnedBlog = await blogService.update(likedBlog)
+      dispatch(updateBlog(returnedBlog))
+      dispatch(
+        setNotification(`Liked '${returnedBlog.title}' by ${returnedBlog.author}`, "success")
+      )
+    } catch (exception) {
+      let exceptionMessage = "Could not like this blog"
+      dispatch(setNotification(exceptionMessage, "error"))
+    }
+  }
+}
+
+export const deleteBlog = blogToDelete => {
+  return async dispatch => {
+    try {
+      await blogService.remove(blogToDelete.id)
+      dispatch(removeBlog(blogToDelete))
+      dispatch(
+        setNotification(
+          `Blog '${blogToDelete.title}' by ${blogToDelete.author} successfully deleted`,
+          "success"
+        )
+      )
+    } catch (exception) {
+      console.error("Removal failed: ", exception)
+      let exceptionMessage = "Could not delete this blog"
+      dispatch(setNotification(exceptionMessage), "error")
     }
   }
 }

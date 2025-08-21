@@ -13,7 +13,6 @@ import { initializeBlogs } from "./reducers/blogReducer"
 import "./index.css"
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [user, setUser] = useState(null)
@@ -65,41 +64,6 @@ const App = () => {
     dispatch(setNotification(`${loggedOutUser.username} successfully logged out`, "success"))
   }
 
-  const addLike = async (id, likedBlog) => {
-    try {
-      const returnedBlog = await blogService.update(id, likedBlog)
-      const blogs = await blogService.getAll()
-      setBlogs(blogs)
-
-      dispatch(
-        setNotification(`Liked '${returnedBlog.title}' by ${returnedBlog.author}`, "success")
-      )
-    } catch (exception) {
-      let exceptionMessage = "Could not like this blog"
-      dispatch(setNotification(exceptionMessage, "error"))
-    }
-  }
-
-  const deleteBlog = async removedBlog => {
-    try {
-      if (window.confirm(`Delete '${removedBlog.title}' by ${removedBlog.author}?`)) {
-        await blogService.remove(removedBlog.id)
-        const blogs = await blogService.getAll()
-        setBlogs(blogs)
-
-        dispatch(
-          setNotification(
-            `Blog '${removedBlog.title}' by ${removedBlog.author} successfully deleted`,
-            "success"
-          )
-        )
-      }
-    } catch (exception) {
-      let exceptionMessage = "Could not delete this blog"
-      dispatch(setNotification(exceptionMessage), "error")
-    }
-  }
-
   const formRef = useRef()
 
   return (
@@ -123,7 +87,7 @@ const App = () => {
             <AddBlogForm formRef={formRef} />
           </Togglable>
           <br />
-          <BlogList like={addLike} username={user.username} remove={deleteBlog} />
+          <BlogList username={user.username} />
         </div>
       )}
     </div>

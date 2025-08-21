@@ -28,24 +28,18 @@ blogsRouter.post("/", middleware.userExtractor, async (request, response) => {
   response.status(201).json(savedBlog)
 })
 
-blogsRouter.delete(
-  "/:id",
-  middleware.userExtractor,
-  async (request, response) => {
-    const user = request.user
+blogsRouter.delete("/:id", middleware.userExtractor, async (request, response) => {
+  const user = request.user
 
-    const blog = await Blog.findById(request.params.id)
+  const blog = await Blog.findById(request.params.id)
 
-    if (blog.user.toString() === user.id.toString()) {
-      await await Blog.findByIdAndDelete(request.params.id)
-      response.status(204).end()
-    } else {
-      return response
-        .status(403)
-        .json({ error: "You do not have permission to delete this blog." })
-    }
+  if (blog.user.toString() === user.id.toString()) {
+    await await Blog.findByIdAndDelete(request.params.id)
+    response.status(204).end()
+  } else {
+    return response.status(403).json({ error: "You do not have permission to delete this blog." })
   }
-)
+})
 
 blogsRouter.put("/:id", async (request, response) => {
   const body = request.body
@@ -60,6 +54,7 @@ blogsRouter.put("/:id", async (request, response) => {
     new: true,
     runValidators: true,
   })
+  await updatedBlog.populate("user", { username: 1, name: 1 })
   response.json(updatedBlog)
 })
 
