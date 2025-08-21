@@ -9,6 +9,7 @@ import Notification from "./components/Notification"
 import blogService from "./services/blogs"
 import loginService from "./services/login"
 import { setNotification } from "./reducers/notificationReducer"
+import { initializeBlogs } from "./reducers/blogReducer"
 import "./index.css"
 
 const App = () => {
@@ -20,8 +21,8 @@ const App = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    blogService.getAll().then(blogs => setBlogs(blogs))
-  }, [])
+    dispatch(initializeBlogs())
+  })
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedBlogappUser")
@@ -142,10 +143,10 @@ const App = () => {
           <User user={user} handleLogout={handleLogout} />
           <br />
           <Togglable buttonLabel='Add New Blog' ref={formRef}>
-            <AddBlogForm createBlog={addBlog} />
+            <AddBlogForm />
           </Togglable>
           <br />
-          <BlogList blogs={blogs} like={addLike} username={user.username} remove={deleteBlog} />
+          <BlogList like={addLike} username={user.username} remove={deleteBlog} />
         </div>
       )}
     </div>
