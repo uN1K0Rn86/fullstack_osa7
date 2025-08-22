@@ -44,8 +44,8 @@ input {
 
 .notification {
   position: fixed;
-  top: 20px;
-  right: 100px;
+  top: 8%;
+  left: 40%;
   background-color: rgba(0, 0, 0, 0.8);
   color: white;
   padding: 10px 20px;
@@ -71,8 +71,8 @@ input {
 
 .error {
   position: fixed;
-  top: 20px;
-  right: 100px;
+  top: 8%;
+  right: 40%;
   background-color: rgba(0, 0, 0, 0.8);
   color: white;
   padding: 10px 20px;

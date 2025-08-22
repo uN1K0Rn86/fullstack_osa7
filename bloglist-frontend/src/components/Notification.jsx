@@ -8,11 +8,7 @@ const Notification = () => {
     return null
   }
 
-  return (
-    <div className={type === "success" ? "notification" : "error"}>
-      {message}
-    </div>
-  )
+  return <div className={type === "success" ? "notification" : "error"}>{message}</div>
 }
 
 Notification.propTypes = {
