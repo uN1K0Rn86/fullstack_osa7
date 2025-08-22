@@ -2,11 +2,11 @@ import { useEffect, useRef } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Routes, Route } from "react-router-dom"
 
+import NavBar from "./components/NavBar"
 import Togglable from "./components/Togglable"
 import BlogList from "./components/BlogList"
 import LoginForm from "./components/LoginForm"
 import AddBlogForm from "./components/AddBlogForm"
-import User from "./components/User"
 import Notification from "./components/Notification"
 import blogService from "./services/blogs"
 import UsersView from "./components/UsersView"
@@ -42,30 +42,29 @@ const App = () => {
   return (
     <div>
       <Notification />
-      {!user && <LoginForm />}
-      {user && (
-        <div>
-          <h2>Blogs</h2>
-          <User />
-          <br />
-        </div>
-      )}
+      <NavBar />
 
       <Routes>
-        {user && (
-          <Route
-            path='/'
-            element={
+        <Route
+          path='/'
+          element={
+            user ? (
               <div>
-                <Togglable buttonLabel='Add New Blog' ref={formRef}>
-                  <AddBlogForm formRef={formRef} />
-                </Togglable>
+                <h2>Blogs</h2>
                 <br />
-                <BlogList username={user.username} />
+                <div>
+                  <Togglable buttonLabel='Add New Blog' ref={formRef}>
+                    <AddBlogForm formRef={formRef} />
+                  </Togglable>
+                  <br />
+                  <BlogList username={user.username} />
+                </div>
               </div>
-            }
-          />
-        )}
+            ) : (
+              <LoginForm />
+            )
+          }
+        />
         <Route path='/users' element={<UsersView />} />
         <Route path='/users/:id' element={<UserView />} />
         <Route path='/blogs/:id' element={<BlogView />} />

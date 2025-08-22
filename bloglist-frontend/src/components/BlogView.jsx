@@ -28,6 +28,9 @@ const BlogView = () => {
         </button>
       </div>
       {blog.user && <div>Added by {blog.user.username}</div>}
+      <div>
+        <Link to='/'>Front page</Link>
+      </div>
     </div>
   )
 }

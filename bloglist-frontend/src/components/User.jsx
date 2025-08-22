@@ -23,7 +23,7 @@ const User = () => {
   }
 
   return (
-    <div>
+    <div style={{ display: "flex", flexDirection: "row", gap: "8px" }}>
       {user.name} logged in
       <form onSubmit={handleLogout}>
         <button type='submit'>Logout</button>

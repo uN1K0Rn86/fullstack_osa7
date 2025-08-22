@@ -60,6 +60,15 @@ input {
     transform 0.3s ease-out;
 }
 
+.navBar {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  padding: 10px;
+  background-color: #f2f2c7;
+  border-radius: 8px;
+}
+
 .error {
   position: fixed;
   top: 20px;
