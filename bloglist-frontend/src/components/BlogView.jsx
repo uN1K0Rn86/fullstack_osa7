@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux"
 import { useParams } from "react-router-dom"
 import { Link } from "react-router-dom"
-import { likeBlog } from "../reducers/blogReducer"
+import { likeBlog, commentBlog } from "../reducers/blogReducer"
 
 const BlogView = () => {
   const dispatch = useDispatch()
@@ -13,6 +13,18 @@ const BlogView = () => {
     const likedBlog = { ...blog }
     likedBlog.likes = blog.likes + 1
     dispatch(likeBlog(likedBlog))
+  }
+
+  const handleAddComment = event => {
+    event.preventDefault()
+    const text = event.target.comment.value
+    dispatch(commentBlog(blog.id, text))
+    event.target.comment.value = ""
+  }
+
+  const formstyle = {
+    display: "flex",
+    gap: "10px",
   }
 
   if (!blog) return <div>Loading...</div>
@@ -32,6 +44,10 @@ const BlogView = () => {
       {blog.user && <div>Added by {blog.user.username}</div>}
       <div>
         <h3>Comments</h3>
+        <form onSubmit={handleAddComment} style={formstyle}>
+          <input type='text' name='comment'></input>
+          <button type='submit'>Comment</button>
+        </form>
         <ul>
           {blog.comments.map(c => (
             <li key={c.id}>{c.text}</li>

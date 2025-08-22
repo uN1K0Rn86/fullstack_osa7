@@ -9,7 +9,6 @@ blogsRouter.get("/", async (request, response) => {
 
 blogsRouter.post("/", middleware.userExtractor, async (request, response) => {
   const user = request.user
-  console.log(user)
 
   const blog = new Blog({
     title: request.body.title,
@@ -60,6 +59,7 @@ blogsRouter.put("/:id", async (request, response) => {
 blogsRouter.post("/:id/comments", async (request, response) => {
   const id = request.params.id
   const comment = request.body.comment
+  console.log(id)
 
   if (!comment) {
     return response.status(400).json({ error: "Comment cannot be empty" })
@@ -71,7 +71,7 @@ blogsRouter.post("/:id/comments", async (request, response) => {
     return response.status(404).json({ error: "Blog not found" })
   }
 
-  blog.comments = blog.comments.concat(comment)
+  blog.comments = blog.comments.concat({ text: comment })
 
   const updatedBlog = await blog.save()
   response.status(201).json(updatedBlog)

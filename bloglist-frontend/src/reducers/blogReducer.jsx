@@ -90,4 +90,16 @@ export const deleteBlog = blogToDelete => {
   }
 }
 
+export const commentBlog = (blogId, text) => {
+  return async dispatch => {
+    try {
+      const returnedBlog = await blogService.comment(blogId, text)
+      dispatch(updateBlog(returnedBlog))
+      dispatch(setNotification("Comment added", "success"))
+    } catch (exception) {
+      dispatch(setNotification("Could not add comment", "error"))
+    }
+  }
+}
+
 export default blogSlice.reducer
