@@ -1,8 +1,8 @@
 import { useSelector } from "react-redux"
 import Blog from "./Blog"
-import PropTypes from "prop-types"
+import { Table } from "react-bootstrap"
 
-const BlogList = ({ username }) => {
+const BlogList = () => {
   const blogs = useSelector(state => state.blogs)
 
   const columnStyle = {
@@ -11,7 +11,7 @@ const BlogList = ({ username }) => {
 
   return (
     <div>
-      <table>
+      <Table striped>
         <thead>
           <tr>
             <th style={columnStyle}>Info</th>
@@ -21,16 +21,12 @@ const BlogList = ({ username }) => {
         </thead>
         <tbody>
           {blogs.map(blog => (
-            <Blog key={blog.id} blog={blog} username={username} />
+            <Blog key={blog.id} blog={blog} />
           ))}
         </tbody>
-      </table>
+      </Table>
     </div>
   )
-}
-
-BlogList.propTypes = {
-  username: PropTypes.string.isRequired,
 }
 
 export default BlogList

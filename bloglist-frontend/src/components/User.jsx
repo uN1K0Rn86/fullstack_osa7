@@ -1,10 +1,12 @@
 import { useSelector, useDispatch } from "react-redux"
 import { setUser } from "../reducers/userReducer"
 import { setNotification } from "../reducers/notificationReducer"
+import { useNavigate } from "react-router-dom"
 
 const User = () => {
   const dispatch = useDispatch()
   const user = useSelector(state => state.user)
+  const navigate = useNavigate()
 
   const handleLogout = async event => {
     event.preventDefault()
@@ -16,6 +18,7 @@ const User = () => {
 
     dispatch(setUser(null))
     dispatch(setNotification(`${loggedOutUser.username} successfully logged out`, "success"))
+    navigate("/")
   }
 
   if (!user) {

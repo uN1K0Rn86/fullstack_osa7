@@ -8,7 +8,13 @@ const NavBar = () => {
   const user = useSelector(state => state.user)
 
   return (
-    <Navbar collapseOnSelect expand='lg' bg='dark' variant='dark'>
+    <Navbar
+      collapseOnSelect
+      expand='lg'
+      bg='dark'
+      variant='dark'
+      style={{ borderRadius: "8px", marginBottom: "10px" }}
+    >
       <Navbar.Toggle aria-controls='responsive-navbar-nav' />
       <Navbar.Collapse id='responsive-navbar-nav'>
         <Nav className='mr-auto'>

@@ -1,20 +1,24 @@
 import { useState } from "react"
+import { registerUser } from "../reducers/userReducer"
 import { useDispatch } from "react-redux"
-import { loginUser } from "../reducers/userReducer"
 import { useNavigate } from "react-router-dom"
 
-const LoginForm = () => {
+const RegisterForm = () => {
   const [username, setUsername] = useState("")
+  const [name, setName] = useState("")
   const [password, setPassword] = useState("")
 
-  const navigate = useNavigate()
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
-  const handleLogin = async event => {
+  const handleRegister = async event => {
     event.preventDefault()
-    dispatch(loginUser(username, password))
+    const user = { username, name, password }
+    dispatch(registerUser(user))
     setUsername("")
+    setName("")
     setPassword("")
+    navigate("/")
   }
 
   const formstyle = {
@@ -25,8 +29,8 @@ const LoginForm = () => {
 
   return (
     <div>
-      <h2>Login</h2>
-      <form onSubmit={handleLogin} style={formstyle}>
+      <h2>Register</h2>
+      <form onSubmit={handleRegister} style={formstyle}>
         <div>
           <label htmlFor='Username'>Username: </label>
         </div>
@@ -38,6 +42,19 @@ const LoginForm = () => {
             id='Username'
             name='Username'
             onChange={({ target }) => setUsername(target.value)}
+          />
+        </div>
+        <div>
+          <label htmlFor='Name'>Name: </label>
+        </div>
+        <div>
+          <input
+            data-testid='name'
+            type='text'
+            value={name}
+            id='Name'
+            name='Name'
+            onChange={({ target }) => setName(target.value)}
           />
         </div>
         <div>
@@ -53,13 +70,10 @@ const LoginForm = () => {
             onChange={({ target }) => setPassword(target.value)}
           />
         </div>
-        <button type='submit'>Login</button>
-        <button type='button' onClick={() => navigate("/register")}>
-          Register
-        </button>
+        <button type='submit'>Register</button>
       </form>
     </div>
   )
 }
 
-export default LoginForm
+export default RegisterForm

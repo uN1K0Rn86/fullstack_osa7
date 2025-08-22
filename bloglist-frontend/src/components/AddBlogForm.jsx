@@ -72,8 +72,11 @@ const AddBlogForm = ({ formRef }) => {
             onChange={({ target }) => setUrl(target.value)}
           />
         </div>
-        <div>
+        <div style={{ display: "flex", flexDirection: "row", gap: "5px" }}>
           <button type='submit'>Create</button>
+          <button type='button' onClick={() => formRef.current.toggleVisibility()}>
+            Cancel
+          </button>
         </div>
       </form>
     </div>

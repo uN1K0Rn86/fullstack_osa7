@@ -12,6 +12,7 @@ import blogService from "./services/blogs"
 import UsersView from "./components/UsersView"
 import UserView from "./components/UserView"
 import BlogView from "./components/BlogView"
+import RegisterForm from "./components/RegisterForm"
 
 import { initializeBlogs } from "./reducers/blogReducer"
 import { setUser } from "./reducers/userReducer"
@@ -57,7 +58,7 @@ const App = () => {
                     <AddBlogForm formRef={formRef} />
                   </Togglable>
                   <br />
-                  <BlogList username={user.username} />
+                  <BlogList />
                 </div>
               </div>
             ) : (
@@ -68,6 +69,7 @@ const App = () => {
         <Route path='/users' element={<UsersView />} />
         <Route path='/users/:id' element={<UserView />} />
         <Route path='/blogs/:id' element={<BlogView />} />
+        <Route path='/register' element={<RegisterForm />} />
       </Routes>
     </div>
   )

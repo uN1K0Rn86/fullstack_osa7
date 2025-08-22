@@ -1,12 +1,14 @@
 import PropTypes from "prop-types"
 import { useState } from "react"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { likeBlog, deleteBlog } from "../reducers/blogReducer"
 import { Link } from "react-router-dom"
 
-const Blog = ({ blog, username }) => {
-  const dispatch = useDispatch()
+const Blog = ({ blog }) => {
   const [showInfo, setShowInfo] = useState(false)
+
+  const dispatch = useDispatch()
+  const username = useSelector(state => state.user.username)
 
   const infoShown = { display: showInfo ? "" : "none" }
   const infoHidden = { display: showInfo ? "none" : "" }
@@ -80,7 +82,6 @@ const Blog = ({ blog, username }) => {
 
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
-  username: PropTypes.string.isRequired,
 }
 
 export default Blog
