@@ -15,6 +15,8 @@ const BlogView = () => {
     dispatch(likeBlog(likedBlog))
   }
 
+  if (!blog) return <div>Loading...</div>
+
   return (
     <div>
       <h2>{blog.title}</h2>
@@ -28,6 +30,14 @@ const BlogView = () => {
         </button>
       </div>
       {blog.user && <div>Added by {blog.user.username}</div>}
+      <div>
+        <h3>Comments</h3>
+        <ul>
+          {blog.comments.map(c => (
+            <li key={c.id}>{c.text}</li>
+          ))}
+        </ul>
+      </div>
       <div>
         <Link to='/'>Front page</Link>
       </div>
